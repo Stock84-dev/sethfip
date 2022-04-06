@@ -27,7 +27,8 @@ async fn main() -> anyhow::Result<()> {
         0 => tracing_subscriber::fmt()
             .with_max_level(Level::ERROR)
             .init(),
-        1 => tracing_subscriber::fmt().with_max_level(Level::INFO).init(),
+        1 => tracing_subscriber::fmt().with_max_level(Level::WARN).init(),
+        2 => tracing_subscriber::fmt().with_max_level(Level::INFO).init(),
         _ => tracing_subscriber::fmt()
             .with_max_level(Level::TRACE)
             .init(),

@@ -32,7 +32,7 @@ pub struct ArgsShared {
     #[clap(long, short)]
     /// Account address to interact with
     pub account: String,
-    #[clap(parse(from_occurrences))]
+    #[clap(short, parse(from_occurrences))]
     /// -v warning level
     /// -vv info level
     /// -vvv show all
