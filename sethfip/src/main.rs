@@ -3,6 +3,7 @@
 
 #![warn(missing_docs)]
 #![deny(unused_must_use)]
+#![deny(rustdoc::broken_intra_doc_links)]
 
 use anyhow::Context;
 use clap::Parser;

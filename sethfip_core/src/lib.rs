@@ -1,5 +1,8 @@
+//! Provides an interaction between IPFS and Ethereum smart contracts.
+
 #![warn(missing_docs)]
 #![deny(unused_must_use)]
+#![deny(rustdoc::broken_intra_doc_links)]
 
 use std::path::Path;
 
@@ -14,11 +17,11 @@ use web3::futures::StreamExt;
 use web3::types::{Address, H256};
 use web3::{ethabi, Transport};
 
+use crate::error::Result;
+
 pub mod error;
 mod utils;
 pub use utils::decode_hex;
-
-pub type Result<T> = std::result::Result<T, crate::error::Error>;
 
 /// Uploads a file to IPFS and saves CID in a smart contract.
 ///
@@ -127,8 +130,11 @@ pub fn build_contract<T: Transport>(eth: Eth<T>, contract_address: &str) -> Resu
     Ok(contract)
 }
 
+/// Structure that is created from [upload] call.
 pub struct UploadOutput {
+    /// IPFS content id (hash) of a file
     pub cid: String,
+    /// Transaction hash of a smart contract function call.
     pub tx_hash: H256,
 }
 
