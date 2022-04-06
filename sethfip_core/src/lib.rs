@@ -1,11 +1,10 @@
 #![warn(missing_docs)]
 #![deny(unused_must_use)]
 
-use crate::error::Error;
-use ipfs_api_backend_hyper::{IpfsApi, IpfsClient};
-use serde_json::Map;
-use serde_json::Value;
 use std::path::Path;
+
+use ipfs_api_backend_hyper::{IpfsApi, IpfsClient};
+use serde_json::{Map, Value};
 use tokio::fs::File;
 use tokio::io::AsyncWriteExt;
 use tracing::{debug, info, trace};
@@ -29,12 +28,10 @@ pub type Result<T> = std::result::Result<T, crate::error::Error>;
 ///
 /// ```no_run
 /// # async fn try_main() -> Result<(), Box<dyn std::error::Error>> {
-/// use ipfs_api_backend_hyper::TryFromUri;
-/// use sethfip_core::{build_contract, decode_hex};
-/// use sethfip_core::upload;
+/// use ipfs_api_backend_hyper::{IpfsClient, TryFromUri};
+/// use sethfip_core::{build_contract, decode_hex, upload};
 /// use web3::types::Address;
 /// use web3::Web3;
-/// use ipfs_api_backend_hyper::IpfsClient;
 ///
 /// let ipfs = IpfsClient::from_host_and_port(http::uri::Scheme::HTTP, "localhost", 5001)?;
 /// let web3 = Web3::new(web3::transports::Http::new("http://localhost:8545")?);
@@ -78,12 +75,10 @@ pub async fn upload<T: Transport>(
 ///
 /// ```no_run
 /// # async fn try_main() -> Result<(), Box<dyn std::error::Error>> {
-/// use ipfs_api_backend_hyper::TryFromUri;
-/// use sethfip_core::{build_contract, decode_hex};
-/// use sethfip_core::download;
+/// use ipfs_api_backend_hyper::{IpfsClient, TryFromUri};
+/// use sethfip_core::{build_contract, decode_hex, download};
 /// use web3::types::Address;
 /// use web3::Web3;
-/// use ipfs_api_backend_hyper::IpfsClient;
 ///
 /// let ipfs = IpfsClient::from_host_and_port(http::uri::Scheme::HTTP, "localhost", 5001)?;
 /// let web3 = Web3::new(web3::transports::Http::new("http://localhost:8545")?);
@@ -139,14 +134,16 @@ pub struct UploadOutput {
 
 #[cfg(test)]
 mod tests {
+    use std::io::{Read, Seek, SeekFrom, Write};
+
     use anyhow::Result;
     use ipfs_api_backend_hyper::{IpfsApi, IpfsClient};
-    use std::io::{Read, Seek, SeekFrom, Write};
     use tempfile::NamedTempFile;
     use web3::contract::Options;
     use web3::futures::StreamExt;
     use web3::types::Address;
     use web3::Web3;
+
     use crate::{build_contract, decode_hex, download, upload};
 
     const ETH_NODE: &'static str = "http://localhost:8545";

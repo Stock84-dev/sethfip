@@ -1,5 +1,5 @@
 use std::fmt::{Display, Formatter};
-use std::path::PathBuf;
+
 use thiserror::Error;
 
 #[derive(Debug)]
@@ -29,5 +29,3 @@ pub enum Error {
     HexDecode(#[from] hex::FromHexError),
     Contract(#[from] web3::contract::Error),
 }
-
-

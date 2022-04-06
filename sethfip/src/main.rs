@@ -4,42 +4,44 @@
 #![warn(missing_docs)]
 #![deny(unused_must_use)]
 
-use crate::cli::{Args, Command};
-use sethfip_core::{build_contract, decode_hex, download, upload};
-use anyhow::{Context, Result};
+use anyhow::Context;
 use clap::Parser;
 use http::uri::Scheme;
-use ipfs_api_backend_hyper::{IpfsApi, IpfsClient, TryFromUri};
-use serde_json::Map;
-use serde_json::Value;
-use std::path::Path;
-use tokio::fs::File;
-use tokio::io::AsyncWriteExt;
+use ipfs_api_backend_hyper::{IpfsClient, TryFromUri};
+use sethfip_core::{build_contract, decode_hex, download, upload};
 use tracing::*;
-use web3::api::Eth;
-use web3::contract::{Contract, Options};
-use web3::types::{Address};
-use web3::{Web3};
+use web3::types::Address;
+use web3::Web3;
+
+use crate::cli::{Args, Command};
 use crate::error::AppError;
 
-mod error;
 mod cli;
+mod error;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     let args: Args = Args::parse();
-        match args.shared.verbose {
-            0 => tracing_subscriber::fmt().with_max_level(Level::ERROR).init(),
-            1 => tracing_subscriber::fmt().with_max_level(Level::INFO).init(),
-            _ => tracing_subscriber::fmt().with_max_level(Level::TRACE).init(),
-        };
+    match args.shared.verbose {
+        0 => tracing_subscriber::fmt()
+            .with_max_level(Level::ERROR)
+            .init(),
+        1 => tracing_subscriber::fmt().with_max_level(Level::INFO).init(),
+        _ => tracing_subscriber::fmt()
+            .with_max_level(Level::TRACE)
+            .init(),
+    };
     //    tracing_subscriber::fmt()
     //        .with_max_level(Level::TRACE)
     //        .init();
     let scheme = match args.shared.ipfs_node.scheme() {
         "http" => Scheme::HTTP,
         "https" => Scheme::HTTPS,
-        _ => return Err(AppError::InvalidIpfsInput(args.shared.ipfs_node.clone(), "url scheme").into()),
+        _ => {
+            return Err(
+                AppError::InvalidIpfsInput(args.shared.ipfs_node.clone(), "url scheme").into(),
+            )
+        }
     };
     let host = args
         .shared
@@ -58,8 +60,9 @@ async fn main() -> anyhow::Result<()> {
 
     match &args.command {
         Command::Upload(upload_args) => {
-            let metadata = tokio::fs::metadata(&upload_args.input).await.
-                map_err(|_| AppError::MissingFile(upload_args.input.clone()))?;
+            let metadata = tokio::fs::metadata(&upload_args.input)
+                .await
+                .map_err(|_| AppError::MissingFile(upload_args.input.clone()))?;
             if !metadata.is_file() {
                 Err(AppError::ExpectedFile(upload_args.input.clone()))?;
             }

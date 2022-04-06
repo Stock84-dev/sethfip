@@ -1,6 +1,7 @@
 use std::path::PathBuf;
-use url::Url;
+
 use thiserror::Error;
+use url::Url;
 
 #[derive(Error, Debug)]
 pub enum AppError {
