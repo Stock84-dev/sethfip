@@ -1,25 +1,7 @@
-use std::fmt::{Display, Formatter};
 //! Sethfip Error
 
 use thiserror::Error;
 
-#[derive(Debug)]
-pub enum InputKind {
-    Ipfs,
-    Eth,
-    File,
-}
-
-impl Display for InputKind {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let name = match self {
-            InputKind::Ipfs => "IPFS",
-            InputKind::Eth => "ETH",
-            InputKind::File => "file",
-        };
-        write!(f, "{}", name)
-    }
-}
 /// Sethfip `Result` type.
 pub type Result<T> = std::result::Result<T, crate::error::Error>;
 
