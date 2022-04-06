@@ -57,7 +57,6 @@ pub async fn upload<T: Transport>(
     debug!("{:#?}", response);
     let hash = &response[0].hash;
     info!("File `{:?}` uploaded, CID={}", path, hash);
-    println!("{}", hash);
     trace!("Saving CID to smart contract...");
     let tx = contract
         .call("set", (hash.to_string(),), account, Options::default())
@@ -98,10 +97,10 @@ pub async fn download<T: Transport>(
     ipfs: &IpfsClient,
     output_path: Option<impl AsRef<Path>>,
 ) -> Result<String> {
+    trace!("Querying smart contract");
     let cid: String = contract
         .query("get", (), account, Options::default(), None)
         .await?;
-    println!("{}", cid);
     let cid_path = Path::new(&cid);
     let file_name = match &output_path {
         None => &cid_path,
