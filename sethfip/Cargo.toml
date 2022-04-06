@@ -1,0 +1,25 @@
+[package]
+name = "sethfip"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+sethfip_core = { path = "../sethfip_core" }
+tokio = "1.11.0"
+clap = { version = "3.1.8", features = ["derive"] }
+anyhow = "1.0.43"
+web3 = "0.17.0"
+ipfs-api-backend-hyper = { version = "0.4" }
+tracing = "0.1.26"
+http = "0.2.4"
+hyper-tls = "0.5.0"
+hyper = "0.14.12"
+tracing-subscriber = "0.2.20"
+ethabi = "17.0.0"
+hex-literal = "0.3.3"
+serde_json = "1.0.67"
+url = "2.2.2"
+hex = "0.4.3"
+thiserror = "1.0.29"
